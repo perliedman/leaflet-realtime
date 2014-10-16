@@ -15,7 +15,14 @@ L.Realtime = L.GeoJSON.extend({
     initialize: function(src, options) {
         L.GeoJSON.prototype.initialize.call(this, undefined, options);
 
-        this._src = src;
+        if (typeof(src) === 'function') {
+            this._src = src;
+        } else {
+            this._src = function(responseHandler, errorHandler) {
+                reqwest(src).then(responseHandler, errorHandler);
+            };
+        }
+
         this.features = {};
 
         if (this.options.start) {
@@ -43,8 +50,10 @@ L.Realtime = L.GeoJSON.extend({
     },
 
     update: function() {
-        var getValue = reqwest(this._src);
-        getValue.then(L.bind(this._onNewData, this), L.bind(this._onError, this));
+        var responseHandler = L.bind(this._onNewData, this),
+            errorHandler = L.bind(this._onError, this);
+
+        this._src(responseHandler, errorHandler);
     },
 
     _onNewData: function(response) {

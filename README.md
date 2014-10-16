@@ -23,7 +23,9 @@ realtime.on('newdata', function() {
 
 ## Usage
 
-Leaflet Realtime reads GeoJSON from a provided source. Data is fetched using [reqwest](https://github.com/ded/reqwest).
+Leaflet Realtime reads GeoJSON from a provided source.
+
+The source can either be an options object that is passed to [reqwest](https://github.com/ded/reqwest) for fetching the data, or a function in case you need more freedom. The function should take two callbacks as arguments: a successcallback that takes GeoJSON as argument, and an error callback that should take an error object and an error message (string) as argument.
 
 `L.Realtime` extends `L.GeoJSON`, but automatically updates the data with the result from a periodic HTTP request. You can basically do anything you can do with `L.GeoJSON` with `L.Realtime` - styling, `onEachFeature`, gettings bounds, etc.
 
