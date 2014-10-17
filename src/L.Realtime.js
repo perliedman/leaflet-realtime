@@ -1,3 +1,5 @@
+"use strict";
+
 var L = require('leaflet'),
     reqwest = require('reqwest');
 
@@ -9,6 +11,14 @@ L.Realtime = L.GeoJSON.extend({
         interval: 60 * 1000,
         getFeatureId: function(f) {
             return f.properties.id;
+        },
+        updateFeature: function(f, oldLayer, newLayer) {
+            if (f.geometry.type === 'Point') {
+                oldLayer.setLatLng(newLayer.getLatLng());
+                return oldLayer;
+            } else {
+                return newLayer;
+            }
         }
     },
 
@@ -23,7 +33,7 @@ L.Realtime = L.GeoJSON.extend({
             };
         }
 
-        this.features = {};
+        this._features = {};
 
         if (this.options.start) {
             this.start();
@@ -56,33 +66,61 @@ L.Realtime = L.GeoJSON.extend({
         this._src(responseHandler, errorHandler);
     },
 
+    getLayer: function(featureId) {
+        return this._features[featureId];
+    },
+
     _onNewData: function(response) {
         var oef = this.options.onEachFeature,
-            known = {};
+            known = {},
+            layersToRemove = [],
+            enter = {},
+            update = {},
+            exit,
+            i;
 
         this.options.onEachFeature = L.bind(function onEachFeature(f, l) {
             var fId,
-                oldLayer;
+                oldLayer,
+                newLayer;
 
             if (oef) {
                 oef(f, l);
             }
 
             fId = this.options.getFeatureId(f);
-            oldLayer = this.features[fId];
+            oldLayer = this._features[fId];
 
             if (oldLayer) {
-                this.removeLayer(oldLayer);
+                newLayer = this.options.updateFeature(f, oldLayer, l);
+                if (newLayer !== oldLayer) {
+                    this.removeLayer(oldLayer);
+                }
+                if (newLayer !== l) {
+                    layersToRemove.push(l);
+                }
+
+                l = newLayer;
+                update[fId] = f;
+            } else {
+                enter[fId] = f;
             }
-            this.features[fId] = l;
+
+            this._features[fId] = l;
             known[fId] = true;
         }, this);
 
         this.addData(response);
-        this._removeUnknown(known);
+        exit = this._removeUnknown(known);
+        for (i = 0; i < layersToRemove.length; i++) {
+            this.removeLayer(layersToRemove[i]);
+        }
 
         this.fire('newdata', {
-            features: this._features
+            features: this._features,
+            enter: enter,
+            update: update,
+            exit: exit
         });
 
         this.options.onEachFeature = oef;
@@ -96,13 +134,17 @@ L.Realtime = L.GeoJSON.extend({
     },
 
     _removeUnknown: function(known) {
-        var fId;
+        var fId,
+            removed = {};
         for (fId in this._features) {
             if (!known[fId]) {
                 this.removeLayer(this._features[fId]);
-                delete this.features[fId];
+                removed[fId] = this._features[fId];
+                delete this._features[fId];
             }
         }
+
+        return removed;
     }
 });
 
