@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "Show realtime updated GeoJSON in Leaflet",
   "main": "src/L.Realtime.js",
+  "directories": {
+    "example": "examples",
+    "dist": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/perliedman/leaflet-realtime.git"
+  },
   "scripts": {
     "prepublish": "grunt",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,6 +24,10 @@
     "email": "per@liedman.net"
   },
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/perliedman/leaflet-realtime/issues"
+  },
+  "homepage": "https://github.com/perliedman/leaflet-realtime",
   "browserify": {
     "transform": "browserify-shim"
   },
