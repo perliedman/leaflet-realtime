@@ -1,0 +1,6 @@
+.leaflet-marker-icon, .leaflet-marker-shadow {
+    transition: transform 0.25s ease;
+    -webkit-transition: transform 0.25s ease;
+    -o-transition: transform 0.25s ease;
+    -moz-transition: transform 0.25s ease;
+}
