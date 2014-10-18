@@ -80,6 +80,7 @@ L.Realtime = L.GeoJSON.extend({
         var oef = this.options.onEachFeature,
             known = {},
             layersToRemove = [],
+            features = {},
             enter = {},
             update = {},
             exit,
@@ -95,6 +96,7 @@ L.Realtime = L.GeoJSON.extend({
             }
 
             fId = this.options.getFeatureId(f);
+            features[fId] = f;
             oldLayer = this._features[fId];
 
             if (oldLayer) {
@@ -123,7 +125,7 @@ L.Realtime = L.GeoJSON.extend({
         }
 
         this.fire('update', {
-            features: this._features,
+            features: features,
             enter: enter,
             update: update,
             exit: exit
