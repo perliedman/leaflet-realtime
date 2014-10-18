@@ -1,6 +1,6 @@
 {
   "name": "leaflet-realtime",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Show realtime updated GeoJSON in Leaflet",
   "main": "src/L.Realtime.js",
   "scripts": {

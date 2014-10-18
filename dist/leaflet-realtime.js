@@ -659,6 +659,8 @@ L.Realtime = L.GeoJSON.extend({
                 this.options.interval);
             this.update();
         }
+
+        return this;
     },
 
     stop: function() {
@@ -666,6 +668,8 @@ L.Realtime = L.GeoJSON.extend({
             clearTimeout(this._timer);
             delete this._timer;
         }
+
+        return this;
     },
 
     isRunning: function() {
@@ -677,6 +681,8 @@ L.Realtime = L.GeoJSON.extend({
             errorHandler = L.bind(this._onError, this);
 
         this._src(responseHandler, errorHandler);
+
+        return this;
     },
 
     getLayer: function(featureId) {
@@ -729,7 +735,7 @@ L.Realtime = L.GeoJSON.extend({
             this.removeLayer(layersToRemove[i]);
         }
 
-        this.fire('newdata', {
+        this.fire('update', {
             features: this._features,
             enter: enter,
             update: update,
