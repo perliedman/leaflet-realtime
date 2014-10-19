@@ -78,7 +78,6 @@ L.Realtime = L.GeoJSON.extend({
 
     _onNewData: function(response) {
         var oef = this.options.onEachFeature,
-            known = {},
             layersToRemove = [],
             features = {},
             enter = {},
@@ -115,11 +114,10 @@ L.Realtime = L.GeoJSON.extend({
             }
 
             this._features[fId] = l;
-            known[fId] = true;
         }, this);
 
         this.addData(response);
-        exit = this._removeUnknown(known);
+        exit = this._removeUnknown(features);
         for (i = 0; i < layersToRemove.length; i++) {
             this.removeLayer(layersToRemove[i]);
         }
