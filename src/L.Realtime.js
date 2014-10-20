@@ -199,4 +199,6 @@ L.realtime = function(src, options) {
     return new L.Realtime(src, options);
 };
 
+L.Realtime.reqwest = reqwest;
+
 module.exports = L.Realtime;

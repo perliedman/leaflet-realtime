@@ -33,7 +33,7 @@ Technically, `L.Realtime` extends `L.GeoJSON`, with the additional functionality
 
 Typical usage involves instantiating `L.Realtime` with options for [`style`](http://leafletjs.com/reference.html#geojson-style) and/or [`onEachFeature`](http://leafletjs.com/reference.html#geojson-oneachfeature), to customize styling and interaction, as well as adding a listener for the [`update`](#event-update) event, to for example list the features currently visible in the map.
 
-For ease of use and flexibility, Leaflet Realtime uses [reqwest](https://github.com/ded/reqwest) for getting data over HTTP(S), and it is bundled in the distribution.
+For ease of use and flexibility, Leaflet Realtime uses [reqwest](https://github.com/ded/reqwest) for getting data over HTTP(S), and it is bundled in the distribution. If you need to use the bundled reqwest library directly, it is exported as `L.Realtime.reqwest`.
 
 ### Push data
 

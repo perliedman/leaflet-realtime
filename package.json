@@ -28,7 +28,12 @@
     "url": "https://github.com/perliedman/leaflet-realtime/issues"
   },
   "homepage": "https://github.com/perliedman/leaflet-realtime",
-  "browserify-shim": {},
+  "browserify": {
+    "transform": ["browserify-shim"]
+  },
+  "browserify-shim": {
+    "leaflet": "global:L"
+  },
   "dependencies": {
     "leaflet": "^0.7.3",
     "reqwest": "^1.1.4"
