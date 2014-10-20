@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 						],
 					],
 					browserifyOptions: {
-						standalone: 'L.Realtime'
+						standalone: 'L.Realtime,reqwest'
 					}
 				}
 			}
