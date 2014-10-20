@@ -13,7 +13,7 @@
   },
   "scripts": {
     "prepublish": "grunt",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "browserify test/L.Realtime | tape-run | faucet"
   },
   "keywords": [
     "leaflet",
@@ -28,20 +28,18 @@
     "url": "https://github.com/perliedman/leaflet-realtime/issues"
   },
   "homepage": "https://github.com/perliedman/leaflet-realtime",
-  "browserify": {
-    "transform": "browserify-shim"
-  },
-  "browserify-shim": {
-    "leaflet": "global:L"
-  },
+  "browserify-shim": {},
   "dependencies": {
     "leaflet": "^0.7.3",
     "reqwest": "^1.1.4"
   },
   "devDependencies": {
     "browserify-shim": "^3.7.0",
+    "faucet": "0.0.1",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.0.1",
-    "grunt-contrib-uglify": "^0.6.0"
+    "grunt-contrib-uglify": "^0.6.0",
+    "tape": "^3.0.1",
+    "tape-run": "^0.3.0"
   }
 }
