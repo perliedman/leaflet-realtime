@@ -1,3 +1,11 @@
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
 .leaflet-marker-icon, .leaflet-marker-shadow {
     transition: transform 0.25s ease;
     -webkit-transition: transform 0.25s ease;
