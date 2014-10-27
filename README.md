@@ -4,7 +4,7 @@ Put realtime data on a Leaflet map: live tracking GPS units, sensor data or just
 
 ## Example
 
-Checkout the [Leaflet Realtime Demo](http://www.liedman.net/leaflet-realtime). Basic example:
+Checkout the [Leaflet Realtime Demo](http://www.liedman.net/leaflet-realtime), or the slightly more advanced [realtime busses in Chattanooga, Tennessee](http://www.liedman.net/leaflet-realtime/busses.html) (made possible with Code for America's nice [openbus-api](https://github.com/codeforamerica/openbus-api)). Basic example:
 
 ```javascript
 var map = L.map('map'),
