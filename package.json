@@ -13,7 +13,7 @@
   },
   "scripts": {
     "prepublish": "grunt",
-    "test": "browserify test/L.Realtime | tape-run | faucet"
+    "test": "browserify node_modules/leaflet test/L.Realtime | tape-run | faucet"
   },
   "keywords": [
     "leaflet",
