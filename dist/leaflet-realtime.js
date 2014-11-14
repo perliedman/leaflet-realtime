@@ -632,7 +632,8 @@ L.Realtime = L.GeoJSON.extend({
             } else {
                 return newLayer;
             }
-        }
+        },
+        cache: false
     },
 
     initialize: function(src, options) {
@@ -641,9 +642,11 @@ L.Realtime = L.GeoJSON.extend({
         if (typeof(src) === 'function') {
             this._src = src;
         } else {
-            this._src = function(responseHandler, errorHandler) {
-                reqwest(src).then(responseHandler, errorHandler);
-            };
+            this._src = L.bind(function(responseHandler, errorHandler) {
+                var reqOptions = this.options.cache ? src : this._bustCache(src);
+
+                reqwest(reqOptions).then(responseHandler, errorHandler);
+            }, this);
         }
 
         this._features = {};
@@ -805,6 +808,18 @@ L.Realtime = L.GeoJSON.extend({
         }
 
         return removed;
+    },
+
+    _bustCache: function(src) {
+        function fixUrl(url) {
+            return url + L.Util.getParamString({'_': new Date().getTime()});
+        }
+
+        if (typeof src === 'string' || src instanceof String) {
+            return fixUrl(src);
+        } else {
+            return L.extend({}, src, {url: fixUrl(src.url)});
+        }
     }
 });
 
