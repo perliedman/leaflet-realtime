@@ -199,7 +199,7 @@ L.Realtime = L.GeoJSON.extend({
 
     _bustCache: function(src) {
         function fixUrl(url) {
-            return url + L.Util.getParamString({'_': new Date().getTime()});
+            return url + L.Util.getParamString({'_': new Date().getTime()}, url);
         }
 
         if (typeof src === 'string' || src instanceof String) {
