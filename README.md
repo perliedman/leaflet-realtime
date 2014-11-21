@@ -1,5 +1,7 @@
 # Leaflet Realtime
 
+[![Build status](https://travis-ci.org/perliedman/leaflet-realtime.svg)](https://travis-ci.org/perliedman/leaflet-realtime)
+
 Put realtime data on a Leaflet map: live tracking GPS units, sensor data or just about anything.
 
 ## Example
