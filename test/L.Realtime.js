@@ -195,3 +195,23 @@ test('remove removes data', function(t) {
     realtime.update(pointFeature);
     realtime.remove(pointFeature);
 });
+
+test('point layer is preserved through updates', function(t) {
+    var updateCount = 0,
+        layer,
+        realtime = setupRealtime(t, function(success) {
+            success(pointFeature);
+        }, {}, function(e) {
+            updateCount++;
+
+            if (updateCount === 1) {
+                layer = realtime.getLayer(1);
+            } else if (updateCount > 1) {
+                t.equal(realtime.getLayer(1), layer);
+            }
+        });
+
+    t.plan(1);
+    realtime.update();
+    realtime.update();
+});
