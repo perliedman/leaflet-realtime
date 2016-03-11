@@ -139,20 +139,14 @@ L.Realtime = L.GeoJSON.extend({
 
             if (oldLayer) {
                 newLayer = this.options.updateFeature(f, oldLayer, l);
-                if (newLayer !== oldLayer) {
-                    this.removeLayer(oldLayer);
-                }
-                if (newLayer !== l) {
-                    layersToRemove.push(l);
-                }
-
-                l = newLayer;
+                layersToRemove.push(newLayer !== oldLayer ? oldLayer : l);
                 update[fId] = f;
             } else {
                 enter[fId] = f;
+                newLayer = l;
             }
 
-            this._featureLayers[fId] = l;
+            this._featureLayers[fId] = newLayer;
             this._features[fId] = features[fId] = f;
         }, this);
 
