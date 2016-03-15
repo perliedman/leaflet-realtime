@@ -72,6 +72,7 @@ L.Realtime = L.GeoJSON.extend({
     
     setUrl: function (url) {
         this._url = url;
+        this.update();
     },    
 
     update: function(geojson) {
