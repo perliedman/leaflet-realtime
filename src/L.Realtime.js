@@ -30,6 +30,9 @@ L.Realtime = L.GeoJSON.extend({
             this._src = src;
         } else {
             this._src = L.bind(function(responseHandler, errorHandler) {
+                if ( this._url !== undefined) {
+                    src.url = this._url;
+                }                
                 var reqOptions = this.options.cache ? src : this._bustCache(src);
 
                 reqwest(reqOptions).then(responseHandler, errorHandler);
@@ -66,6 +69,11 @@ L.Realtime = L.GeoJSON.extend({
     isRunning: function() {
         return this._timer;
     },
+    
+    setUrl: function (url) {
+        this._url = url;
+        this.update();
+    },    
 
     update: function(geojson) {
         var responseHandler,
