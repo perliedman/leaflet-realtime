@@ -38,18 +38,18 @@
   },
   "dependencies": {
     "leaflet": "^0.7.3",
-    "reqwest": "^1.1.4"
+    "reqwest": "^2.0.5"
   },
   "devDependencies": {
     "browserify-shim": "^3.7.0",
     "faucet": "0.0.1",
     "grunt": "^0.4.5",
-    "grunt-browserify": "^3.0.1",
-    "grunt-cli": "^0.1.13",
-    "grunt-contrib-uglify": "^0.6.0",
-    "phantomjs": "^1.9.12",
-    "tape": "^3.0.1",
-    "tape-run": "^0.3.0",
-    "browserify": "^6.3.2"
+    "grunt-browserify": "^5.0.0",
+    "grunt-cli": "^1.1.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "phantomjs": "^2.1.3",
+    "tape": "^4.5.1",
+    "tape-run": "^2.1.3",
+    "browserify": "^13.0.0"
   }
 }
