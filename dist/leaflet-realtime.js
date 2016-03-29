@@ -1,4 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}(g.L || (g.L = {})).Realtime = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),(f.L||(f.L={})).Realtime=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*!
   * Reqwest! A general purpose XHR connection manager
   * license MIT (c) Dustin Diaz 2014
@@ -81,7 +81,6 @@
       // use _aborted to mitigate against IE err c00c023f
       // (can't read props on aborted request objects)
       if (r._aborted) return error(r.request)
-      if (r._timedOut) return error(r.request, 'Request is aborted: timeout')
       if (r.request && r.request[readyState] == 4) {
         r.request.onreadystatechange = noop
         if (succeed(r)) success(r.request)
@@ -268,7 +267,7 @@
 
     if (o['timeout']) {
       this.timeout = setTimeout(function () {
-        timedOut()
+        self.abort()
       }, o['timeout'])
     }
 
@@ -344,11 +343,6 @@
       }
 
       complete(resp)
-    }
-
-    function timedOut() {
-      self._timedOut = true
-      self.request.abort()      
     }
 
     function error(resp, msg, t) {
@@ -619,7 +613,7 @@
 (function (global){
 "use strict";
 
-var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
+var L = (typeof window !== "undefined" ? window.L : typeof global !== "undefined" ? global.L : null),
     reqwest = require('reqwest');
 
 L.Realtime = L.GeoJSON.extend({
@@ -649,6 +643,9 @@ L.Realtime = L.GeoJSON.extend({
             this._src = src;
         } else {
             this._src = L.bind(function(responseHandler, errorHandler) {
+                if ( this._url !== undefined) {
+                    src.url = this._url;
+                }                
                 var reqOptions = this.options.cache ? src : this._bustCache(src);
 
                 reqwest(reqOptions).then(responseHandler, errorHandler);
@@ -685,6 +682,11 @@ L.Realtime = L.GeoJSON.extend({
     isRunning: function() {
         return this._timer;
     },
+    
+    setUrl: function (url) {
+        this._url = url;
+        this.update();
+    },    
 
     update: function(geojson) {
         var responseHandler,
@@ -758,20 +760,14 @@ L.Realtime = L.GeoJSON.extend({
 
             if (oldLayer) {
                 newLayer = this.options.updateFeature(f, oldLayer, l);
-                if (newLayer !== oldLayer) {
-                    this.removeLayer(oldLayer);
-                }
-                if (newLayer !== l) {
-                    layersToRemove.push(l);
-                }
-
-                l = newLayer;
+                layersToRemove.push(newLayer !== oldLayer ? oldLayer : l);
                 update[fId] = f;
             } else {
                 enter[fId] = f;
+                newLayer = l;
             }
 
-            this._featureLayers[fId] = l;
+            this._featureLayers[fId] = newLayer;
             this._features[fId] = features[fId] = f;
         }, this);
 
