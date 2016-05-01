@@ -7,7 +7,7 @@ Put realtime data on a Leaflet map: live tracking GPS units, sensor data or just
 
 ## Example
 
-Checkout the [Leaflet Realtime Demo](http://www.liedman.net/leaflet-realtime), or the slightly more advanced [trains in Sweden](http://www.liedman.net/leaflet-realtime/trains.html) (made possible with [Tågkartan](http://www.tagkartan.se/)'s nice data. Basic example:
+Checkout the [Leaflet Realtime Demo](http://www.liedman.net/leaflet-realtime). Basic example:
 
 ```javascript
 var map = L.map('map'),
