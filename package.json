@@ -50,6 +50,6 @@
     "phantomjs": "^2.1.7",
     "tape": "^3.0.1",
     "tape-run": "^0.3.0",
-    "browserify": "^6.3.2"
+    "browserify": "^13.0.1"
   }
 }
