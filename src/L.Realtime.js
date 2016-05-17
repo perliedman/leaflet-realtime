@@ -41,6 +41,7 @@ L.Realtime = L.GeoJSON.extend({
 
         this._features = {};
         this._featureLayers = {};
+        this._requestCount = 0;
 
         if (this.options.start) {
             this.start();
@@ -76,7 +77,15 @@ L.Realtime = L.GeoJSON.extend({
     },    
 
     update: function(geojson) {
-        var responseHandler,
+        var requestCount = ++this._requestCount,
+            checkRequestCount = L.bind(function(cb) {
+                return L.bind(function() {
+                    if (requestCount === this._requestCount) {
+                        return cb.apply(this, arguments);
+                    }
+                }, this);
+            }, this),
+            responseHandler,
             errorHandler;
 
         if (geojson) {
@@ -85,7 +94,7 @@ L.Realtime = L.GeoJSON.extend({
             responseHandler = L.bind(function(data) { this._onNewData(true, data); }, this);
             errorHandler = L.bind(this._onError, this);
 
-            this._src(responseHandler, errorHandler);
+            this._src(checkRequestCount(responseHandler), checkRequestCount(errorHandler));
         }
 
         return this;

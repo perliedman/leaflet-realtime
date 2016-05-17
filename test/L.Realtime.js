@@ -19,6 +19,16 @@ var L = require('leaflet'),
         properties: {
             id: 2
         }
+    },
+    pointFeature2_2 = {
+        type: 'Feature',
+        geometry: {
+            type: 'Point',
+            coordinates: [11.8, 57.75]
+        },
+        properties: {
+            id: 2
+        }
     };
 
 function setupRealtime(t, source, options, updateHandler) {
@@ -212,6 +222,36 @@ test('point layer is preserved through updates', function(t) {
         });
 
     t.plan(1);
+    realtime.update();
+    realtime.update();
+});
+
+test('errors from old requests are ignored', function(t) {
+    var updateCount = 0,
+        realtime = setupRealtime(t, function(success, error) {
+            if (updateCount === 0) {
+                var f = function() {
+                    if (updateCount === 2) {
+                        error();
+                        setTimeout(function() {
+                            t.end();
+                        }, 100);
+                        return;
+                    }
+                    setTimeout(f, 10);
+                };
+                f();
+            } else if (updateCount === 1) {
+                success(pointFeature2_2);
+            }
+            updateCount++;
+    }, {}, function(e) {
+    });
+
+    realtime.on('error', function() {
+        t.fail();
+    });
+
     realtime.update();
     realtime.update();
 });
