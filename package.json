@@ -48,7 +48,7 @@
     "grunt-cli": "^1.2.0",
     "grunt-contrib-uglify": "^0.6.0",
     "phantomjs": "^2.1.7",
-    "tape": "^3.0.1",
+    "tape": "^4.6.0",
     "tape-run": "^2.1.4",
     "browserify": "^13.0.1"
   }
