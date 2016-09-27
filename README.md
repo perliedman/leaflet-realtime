@@ -1,7 +1,7 @@
 # Leaflet Realtime
 
 [![Build status](https://travis-ci.org/perliedman/leaflet-realtime.svg)](https://travis-ci.org/perliedman/leaflet-realtime)
-[![NPM](https://nodei.co/npm/leaflet-realtime.png)](https://nodei.co/npm/leaflet-realtime/)
+[![NPM version](https://img.shields.io/npm/v/leaflet-realtime.svg)](https://www.npmjs.com/package/leaflet-control-geocoder) ![Leaflet 1.0.0 compatible!](https://img.shields.io/badge/Leaflet%201.0.0-%E2%9C%93-1EB300.svg?style=flat)
 
 Put realtime data on a Leaflet map: live tracking GPS units, sensor data or just about anything.
 
