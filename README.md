@@ -2,6 +2,7 @@
 
 [![Build status](https://travis-ci.org/perliedman/leaflet-realtime.svg)](https://travis-ci.org/perliedman/leaflet-realtime)
 [![NPM version](https://img.shields.io/npm/v/leaflet-realtime.svg)](https://www.npmjs.com/package/leaflet-realtime) ![Leaflet 1.0.0 compatible!](https://img.shields.io/badge/Leaflet%201.0.0-%E2%9C%93-1EB300.svg?style=flat)
+[![CDNJS](https://img.shields.io/cdnjs/v/leaflet-realtime.svg)](https://cdnjs.com/libraries/leaflet-realtime)
 
 Put realtime data on a Leaflet map: live tracking GPS units, sensor data or just about anything.
 
