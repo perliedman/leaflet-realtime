@@ -37,7 +37,7 @@
     "leaflet": "global:L"
   },
   "dependencies": {
-    "leaflet": "^0.7.3",
+    "leaflet": "^1.0.2",
     "reqwest": "^1.1.4"
   },
   "devDependencies": {
