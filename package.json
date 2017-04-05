@@ -41,7 +41,7 @@
     "reqwest": "^2.0.5"
   },
   "devDependencies": {
-    "browserify": "^14.0.0",
+    "browserify": "14.2.0",
     "browserify-shim": "^3.8.12",
     "faucet": "0.0.1",
     "grunt": "^1.0.1",
