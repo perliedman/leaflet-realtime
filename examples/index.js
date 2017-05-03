@@ -1,9 +1,5 @@
 var map = L.map('map'),
-    realtime = L.realtime({
-        url: 'https://wanderdrone.appspot.com/',
-        crossOrigin: true,
-        type: 'json'
-    }, {
+    realtime = L.realtime('https://wanderdrone.appspot.com/', {
         interval: 3 * 1000
     }).addTo(map);
 

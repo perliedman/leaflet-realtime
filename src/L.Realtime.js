@@ -1,11 +1,8 @@
 "use strict";
 
-var L = require('leaflet'),
-    reqwest = require('reqwest');
+var L = require('leaflet');
 
 L.Realtime = L.GeoJSON.extend({
-    includes: L.Mixin.Events,
-
     options: {
         start: true,
         interval: 60 * 1000,
@@ -30,12 +27,20 @@ L.Realtime = L.GeoJSON.extend({
             this._src = src;
         } else {
             this._src = L.bind(function(responseHandler, errorHandler) {
-                if ( this._url !== undefined) {
+                var srcIsString = typeof src === 'string' || src instanceof String,
+                    url = srcIsString ? src : src.url,
+                    fetchOptions = srcIsString ? null : src;
+                if (this._url !== undefined) {
                     src.url = this._url;
-                }                
-                var reqOptions = this.options.cache ? src : this._bustCache(src);
+                }
+                var url = this.options.cache ? url : this._bustCache(url);
 
-                reqwest(reqOptions).then(responseHandler, errorHandler);
+                fetch(url)
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(responseHandler)
+                .catch(errorHandler);
             }, this);
         }
 
@@ -208,23 +213,13 @@ L.Realtime = L.GeoJSON.extend({
         return removed;
     },
 
-    _bustCache: function(src) {
-        function fixUrl(url) {
-            return url + L.Util.getParamString({'_': new Date().getTime()}, url);
-        }
-
-        if (typeof src === 'string' || src instanceof String) {
-            return fixUrl(src);
-        } else {
-            return L.extend({}, src, {url: fixUrl(src.url)});
-        }
+    _bustCache: function(url) {
+        return url + L.Util.getParamString({'_': new Date().getTime()}, url);
     }
 });
 
 L.realtime = function(src, options) {
     return new L.Realtime(src, options);
 };
-
-L.Realtime.reqwest = reqwest;
 
 module.exports = L.Realtime;

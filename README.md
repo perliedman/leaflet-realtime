@@ -37,7 +37,7 @@ Technically, `L.Realtime` extends `L.GeoJSON`, with the additional functionality
 
 Typical usage involves instantiating `L.Realtime` with options for [`style`](http://leafletjs.com/reference.html#geojson-style) and/or [`onEachFeature`](http://leafletjs.com/reference.html#geojson-oneachfeature), to customize styling and interaction, as well as adding a listener for the [`update`](#event-update) event, to for example list the features currently visible in the map.
 
-For ease of use and flexibility, Leaflet Realtime uses [reqwest](https://github.com/ded/reqwest) for getting data over HTTP(S), and it is bundled in the distribution. If you need to use the bundled reqwest library directly, it is exported as `L.Realtime.reqwest`.
+Since version 2.0, Leaflet Realtime uses the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to request data (AJAX). If you are in the unfortunate situation that you need to support a browser without Fetch, you either need to use a polyfill, or write your own [source function](#source) to make the AJAX requests.
 
 ### Push data
 
@@ -88,7 +88,11 @@ Method                 | Returns        | Description
 
 #### <a name="source"></a> Source
 
-The source can either be an options object that is passed to [reqwest](https://github.com/ded/reqwest) for fetching the data, or a function in case you need more freedom.
+The source can be one of:
+
+* a string with the URL to get data from
+* an options object that is passed to [fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for fetching the data
+* a function in case you need more freedom.
 
 In case you use a function, the function should take two callbacks as arguments: `fn(success, error)`, with the callbacks:
 

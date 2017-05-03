@@ -10,11 +10,8 @@ var map = L.map('map'),
         }
     },
     realtime = L.realtime(function(success, error) {
-        L.Realtime.reqwest({
-            url: 'https://wanderdrone.appspot.com/',
-            crossOrigin: true,
-            type: 'json'
-        })
+        fetch('https://wanderdrone.appspot.com/')
+        .then(function(response) { return response.json(); })
         .then(function(data) {
             var trailCoords = trail.geometry.coordinates;
             trailCoords.push(data.geometry.coordinates);
@@ -26,7 +23,7 @@ var map = L.map('map'),
         })
         .catch(error);
     }, {
-        interval: 3 * 1000
+        interval: 250
     }).addTo(map);
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
