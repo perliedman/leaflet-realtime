@@ -15,6 +15,7 @@ L.Realtime = L.GeoJSON.extend({
                 return newLayer;
             }
         },
+        logErrors: true,
         cache: false
     },
 
@@ -190,6 +191,10 @@ L.Realtime = L.GeoJSON.extend({
     },
 
     _onError: function(err, msg) {
+        if (this.options.logErrors) {
+            console.warn(err, msg);
+        }
+
         this.fire('error', {
             error: err,
             message: msg
