@@ -6,14 +6,6 @@ module.exports = function(grunt) {
 				src: ['src/L.Realtime.js'],
 				dest: 'dist/leaflet-realtime.js',
 				options: {
-					transform: [
-						[
-							'browserify-shim',
-							{
-								'leaflet': 'global:L'
-							}
-						],
-					],
 					browserifyOptions: {
 						standalone: 'L.Realtime'
 					}

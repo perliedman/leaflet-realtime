@@ -1,7 +1,5 @@
 "use strict";
 
-var L = require('leaflet');
-
 L.Realtime = L.GeoJSON.extend({
     options: {
         start: true,
