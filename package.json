@@ -39,5 +39,9 @@
     "phantomjs": "^2.1.7",
     "tape": "^4.6.0",
     "tape-run": "^3.0.0"
+  },
+  "dependencies": {
+    "browserify": "^14.3.0",
+    "grunt-contrib-uglify": "^2.3.0"
   }
 }
