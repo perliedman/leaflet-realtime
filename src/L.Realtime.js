@@ -7,12 +7,13 @@ L.Realtime = L.GeoJSON.extend({
         getFeatureId: function(f) {
             return f.properties.id;
         },
-        updateFeature: function(f, oldLayer, newLayer) {
+        updateFeature: function(f, oldLayer) {
+            if (!oldLayer) { return; }
+
             if (f.geometry.type === 'Point') {
-                oldLayer.setLatLng(newLayer.getLatLng());
+                var c = f.geometry.coordinates;
+                oldLayer.setLatLng([c[1], c[0]]);
                 return oldLayer;
-            } else {
-                return newLayer;
             }
         },
         logErrors: true,
@@ -137,44 +138,71 @@ L.Realtime = L.GeoJSON.extend({
         return this._features[featureId];
     },
 
-    _onNewData: function(removeMissing, response) {
-        var oef = this.options.onEachFeature,
-            layersToRemove = [],
-            features = {},
+    _onNewData: function(removeMissing, geojson) {
+        var layersToRemove = [],
             enter = {},
             update = {},
             exit = {},
-            i;
+            seenFeatures = {},
+            i, len, feature;
 
-        this.options.onEachFeature = L.bind(function onEachFeature(f, l) {
-            var fId,
-                oldLayer,
-                newLayer;
-
-            if (oef) {
-                oef(f, l);
+        var handleData = L.bind(function(geojson) {
+            var features = L.Util.isArray(geojson) ? geojson : geojson.features;
+            if (features) {
+                for (i = 0, len = features.length; i < len; i++) {
+                    // only add this if geometry or geometries are set and not null
+                    feature = features[i];
+                    if (feature.geometries || feature.geometry || feature.features || feature.coordinates) {
+                        handleData(feature);
+                    }
+                }
+                return;
             }
 
-            fId = this.options.getFeatureId(f);
-            oldLayer = this._featureLayers[fId];
+            var options = this.options;
+
+            if (options.filter && !options.filter(geojson)) { return; }
+
+            var f = L.GeoJSON.asFeature(geojson);
+            var fId = options.getFeatureId(f);
+            var oldLayer = this._featureLayers[fId];
+
+            var layer = this.options.updateFeature(f, oldLayer);
+            if (!layer) {
+                layer = L.GeoJSON.geometryToLayer(geojson, options);
+                if (!layer) {
+                    return;
+                }
+                layer.defaultOptions = layer.options;
+                layer.feature = f;
+
+                if (options.onEachFeature) {
+                    options.onEachFeature(geojson, layer);
+                }
+            }
+
+            layer.feature = f;
+            this.resetStyle(layer);
 
             if (oldLayer) {
-                newLayer = this.options.updateFeature(f, oldLayer, l);
-                layersToRemove.push(newLayer !== oldLayer ? oldLayer : l);
-                update[fId] = f;
+                update[fId] = geojson;
+                if (oldLayer != layer) {
+                    layersToRemove.push(oldLayer);
+                    this.addLayer(layer);
+                }
             } else {
-                enter[fId] = f;
-                newLayer = l;
+                enter[fId] = geojson;
+                this.addLayer(layer);
             }
 
-            this._featureLayers[fId] = newLayer;
-            this._features[fId] = features[fId] = f;
+            this._featureLayers[fId] = layer;
+            this._features[fId] = seenFeatures[fId] = f;
         }, this);
 
-        this.addData(response);
+        handleData(geojson);
 
         if (removeMissing) {
-            exit = this._removeUnknown(features);
+            exit = this._removeUnknown(seenFeatures);
         }
         for (i = 0; i < layersToRemove.length; i++) {
             this.removeLayer(layersToRemove[i]);
@@ -187,7 +215,56 @@ L.Realtime = L.GeoJSON.extend({
             exit: exit
         });
 
-        this.options.onEachFeature = oef;
+        // var oef = this.options.onEachFeature,
+        //     layersToRemove = [],
+        //     features = {},
+        //     enter = {},
+        //     update = {},
+        //     exit = {},
+        //     i;
+
+        // this.options.onEachFeature = L.bind(function onEachFeature(f, l) {
+        //     var fId,
+        //         oldLayer,
+        //         newLayer;
+
+        //     if (oef) {
+        //         oef(f, l);
+        //     }
+
+        //     fId = this.options.getFeatureId(f);
+        //     oldLayer = this._featureLayers[fId];
+
+        //     if (oldLayer) {
+        //         newLayer = this.options.updateFeature(f, oldLayer, l);
+        //         layersToRemove.push(newLayer !== oldLayer ? oldLayer : l);
+        //         update[fId] = f;
+        //     } else {
+        //         enter[fId] = f;
+        //         newLayer = l;
+        //     }
+
+        //     this._featureLayers[fId] = newLayer;
+        //     this._features[fId] = features[fId] = f;
+        // }, this);
+
+        // this.addData(response);
+
+        // if (removeMissing) {
+        //     exit = this._removeUnknown(features);
+        // }
+        // for (i = 0; i < layersToRemove.length; i++) {
+        //     this.removeLayer(layersToRemove[i]);
+        // }
+
+        // this.fire('update', {
+        //     features: this._features,
+        //     enter: enter,
+        //     update: update,
+        //     exit: exit
+        // });
+
+        // this.options.onEachFeature = oef;
     },
 
     _onError: function(err, msg) {
