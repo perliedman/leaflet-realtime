@@ -6,6 +6,8 @@
 
 Put realtime data on a Leaflet map: live tracking GPS units, sensor data or just about anything.
 
+_Note:_ version 2 and up of this plugin is _only compatible with Leaflet 1.0 and later. Use earlier versions of Leaflet Realtime if you need Leaflet 0.7 compatibility.
+
 ## Example
 
 Checkout the [Leaflet Realtime Demo](http://www.liedman.net/leaflet-realtime). Basic example:
@@ -66,7 +68,7 @@ Option                 | Type                | Default       | Description
 `start`                | `Boolean`           | `true`        | Should automatic updates be enabled when class is instantiated
 `interval`             | `Number`            | 60000         | Automatic update interval, in milliseconds
 `getFeatureId(<GeoJSON> featureData)`         | `Function`          | Returns `featureData.properties.id` | Function used to get an identifier uniquely identify a feature over time
-`updateFeature(<GeoJSON> featureData, <ILayer> oldLayer, <ILayer> newLayer)`                 | `Function` | Special | Used to update an existing feature's layer; by default, points (markers) are updated, other layers are discarded and replaced with a new, updated layer. Allows to create more complex transitions, for example, when a feature is updated |
+`updateFeature(<GeoJSON> featureData, <ILayer> oldLayer)`                 | `Function` | Special | Used to update an existing feature's layer; by default, points (markers) are updated, other layers are discarded and replaced with a new, updated layer. Allows to create more complex transitions, for example, when a feature is updated |
 
 ##### Events
 
