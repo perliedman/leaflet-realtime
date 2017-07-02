@@ -35,7 +35,9 @@ By default, Leaflet Realtime reads and displays GeoJSON from a provided source. 
 
 To be able to figure out when new features are added, when old features are removed, and which features are just updated, Leaflet Realtime needs to identify each feature uniquely. This is done using a _feature id_. Usually, this can be done using one of the feature's `properties`. By default, Leaflet Realtime will try to look for a called property `id` and use that.
 
-Technically, `L.Realtime` extends `L.GeoJSON`, with the additional functionality that it automatically updates the data with the result from a periodic HTTP request. You can basically do anything you can do with `L.GeoJSON` with `L.Realtime` - styling, `onEachFeature`, gettings bounds, etc.
+By default, `L.Realtime` uses a `L.GeoJSON` layer to display the results. You can basically do anything you can do with `L.GeoJSON` with `L.Realtime` - styling, `onEachFeature`, gettings bounds, etc. as if you were working directly with a normal GeoJSON layer.
+
+`L.Realtime` can also use other layer types to display the results, for example it can use a `MarkerClusterGroup` from [Leaflet MarkerCluster](https://github.com/Leaflet/Leaflet.markercluster): pass a `LayerGroup` (or any class that implements `addLayer` and `removeLayer`) to `L.Realtime`'s `container` option. (This feature was added in version 2.1.0.)
 
 Typical usage involves instantiating `L.Realtime` with options for [`style`](http://leafletjs.com/reference.html#geojson-style) and/or [`onEachFeature`](http://leafletjs.com/reference.html#geojson-oneachfeature), to customize styling and interaction, as well as adding a listener for the [`update`](#event-update) event, to for example list the features currently visible in the map.
 
@@ -69,6 +71,7 @@ Option                 | Type                | Default       | Description
 `interval`             | `Number`            | 60000         | Automatic update interval, in milliseconds
 `getFeatureId(<GeoJSON> featureData)`         | `Function`          | Returns `featureData.properties.id` | Function used to get an identifier uniquely identify a feature over time
 `updateFeature(<GeoJSON> featureData, <ILayer> oldLayer)`                 | `Function` | Special | Used to update an existing feature's layer; by default, points (markers) are updated, other layers are discarded and replaced with a new, updated layer. Allows to create more complex transitions, for example, when a feature is updated |
+`container`            | `LayerGroup`        | L.geoJson()   | Specifies the layer instance to display the results in
 
 ##### Events
 

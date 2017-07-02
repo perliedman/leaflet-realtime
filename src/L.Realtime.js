@@ -1,6 +1,6 @@
 "use strict";
 
-L.Realtime = L.GeoJSON.extend({
+L.Realtime = L.Layer.extend({
     options: {
         start: true,
         interval: 60 * 1000,
@@ -21,7 +21,8 @@ L.Realtime = L.GeoJSON.extend({
     },
 
     initialize: function(src, options) {
-        L.GeoJSON.prototype.initialize.call(this, undefined, options);
+        L.setOptions(this, options);
+        this._container = options.container || L.geoJson(null);
 
         if (typeof(src) === 'function') {
             this._src = src;
@@ -114,7 +115,7 @@ L.Realtime = L.GeoJSON.extend({
 
         for (i = 0, len = features.length; i < len; i++) {
             fId = this.options.getFeatureId(features[i]);
-            this.removeLayer(this._featureLayers[fId]);
+            this._container.removeLayer(this._featureLayers[fId]);
             exit[fId] = this._features[fId];
             delete this._features[fId];
             delete this._featureLayers[fId];
@@ -138,6 +139,23 @@ L.Realtime = L.GeoJSON.extend({
         return this._features[featureId];
     },
 
+    getBounds: function() {
+        var container = this._container;
+        if (container.getBounds) {
+            return container.getBounds();
+        }
+
+        throw new Error('Container has no getBounds method');
+    },
+
+    onAdd: function(map) {
+        map.addLayer(this._container);
+    },
+
+    onRemove: function(map) {
+        map.removeLayer(this._container);
+    },
+
     _onNewData: function(removeMissing, geojson) {
         var layersToRemove = [],
             enter = {},
@@ -159,6 +177,7 @@ L.Realtime = L.GeoJSON.extend({
                 return;
             }
 
+            var container = this._container;
             var options = this.options;
 
             if (options.filter && !options.filter(geojson)) { return; }
@@ -182,17 +201,19 @@ L.Realtime = L.GeoJSON.extend({
             }
 
             layer.feature = f;
-            this.resetStyle(layer);
+            if (container.resetStyle) {
+                container.resetStyle(layer);
+            }
 
             if (oldLayer) {
                 update[fId] = geojson;
                 if (oldLayer != layer) {
                     layersToRemove.push(oldLayer);
-                    this.addLayer(layer);
+                    container.addLayer(layer);
                 }
             } else {
                 enter[fId] = geojson;
-                this.addLayer(layer);
+                container.addLayer(layer);
             }
 
             this._featureLayers[fId] = layer;
@@ -205,7 +226,7 @@ L.Realtime = L.GeoJSON.extend({
             exit = this._removeUnknown(seenFeatures);
         }
         for (i = 0; i < layersToRemove.length; i++) {
-            this.removeLayer(layersToRemove[i]);
+            this._container.removeLayer(layersToRemove[i]);
         }
 
         this.fire('update', {
@@ -232,7 +253,7 @@ L.Realtime = L.GeoJSON.extend({
             removed = {};
         for (fId in this._featureLayers) {
             if (!known[fId]) {
-                this.removeLayer(this._featureLayers[fId]);
+                this._container.removeLayer(this._featureLayers[fId]);
                 removed[fId] = this._features[fId];
                 delete this._featureLayers[fId];
                 delete this._features[fId];
