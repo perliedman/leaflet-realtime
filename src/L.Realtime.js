@@ -214,57 +214,6 @@ L.Realtime = L.GeoJSON.extend({
             update: update,
             exit: exit
         });
-
-        // var oef = this.options.onEachFeature,
-        //     layersToRemove = [],
-        //     features = {},
-        //     enter = {},
-        //     update = {},
-        //     exit = {},
-        //     i;
-
-        // this.options.onEachFeature = L.bind(function onEachFeature(f, l) {
-        //     var fId,
-        //         oldLayer,
-        //         newLayer;
-
-        //     if (oef) {
-        //         oef(f, l);
-        //     }
-
-        //     fId = this.options.getFeatureId(f);
-        //     oldLayer = this._featureLayers[fId];
-
-        //     if (oldLayer) {
-        //         newLayer = this.options.updateFeature(f, oldLayer, l);
-        //         layersToRemove.push(newLayer !== oldLayer ? oldLayer : l);
-        //         update[fId] = f;
-        //     } else {
-        //         enter[fId] = f;
-        //         newLayer = l;
-        //     }
-
-        //     this._featureLayers[fId] = newLayer;
-        //     this._features[fId] = features[fId] = f;
-        // }, this);
-
-        // this.addData(response);
-
-        // if (removeMissing) {
-        //     exit = this._removeUnknown(features);
-        // }
-        // for (i = 0; i < layersToRemove.length; i++) {
-        //     this.removeLayer(layersToRemove[i]);
-        // }
-
-        // this.fire('update', {
-        //     features: this._features,
-        //     enter: enter,
-        //     update: update,
-        //     exit: exit
-        // });
-
-        // this.options.onEachFeature = oef;
     },
 
     _onError: function(err, msg) {
