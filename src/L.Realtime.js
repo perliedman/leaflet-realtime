@@ -10,11 +10,12 @@ L.Realtime = L.Layer.extend({
         updateFeature: function(f, oldLayer) {
             if (!oldLayer) { return; }
 
-            if (f.geometry.type === 'Point') {
+            if (oldLayer.setLatLng) {
                 var c = f.geometry.coordinates;
                 oldLayer.setLatLng([c[1], c[0]]);
                 return oldLayer;
             }
+            return oldLayer;
         },
         logErrors: true,
         cache: false
