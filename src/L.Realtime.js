@@ -36,7 +36,7 @@ L.Realtime = L.Layer.extend({
                 }
                 var url = this.options.cache ? url : this._bustCache(url);
 
-                fetch(url)
+                fetch(url, fetchOptions)
                 .then(function(response) {
                     return response.json();
                 })
