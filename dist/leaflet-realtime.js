@@ -28,22 +28,8 @@ L.Realtime = L.Layer.extend({
         if (typeof(src) === 'function') {
             this._src = src;
         } else {
-            this._src = L.bind(function(responseHandler, errorHandler) {
-                var srcIsString = typeof src === 'string' || src instanceof String,
-                    url = srcIsString ? src : src.url,
-                    fetchOptions = srcIsString ? null : src;
-                if (this._url !== undefined) {
-                    src.url = this._url;
-                }
-                var url = this.options.cache ? url : this._bustCache(url);
-
-                fetch(url)
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(responseHandler)
-                .catch(errorHandler);
-            }, this);
+            this._fetchOptions = src && src.url ? src : {url: src};
+            this._src = L.bind(this._defaultSource, this);
         }
 
         this._features = {};
@@ -79,8 +65,12 @@ L.Realtime = L.Layer.extend({
     },
     
     setUrl: function (url) {
-        this._url = url;
-        this.update();
+        if (this._fetchOptions) {
+            this._fetchOptions.url = url;
+            this.update();
+        } else {
+            throw new Error('Custom sources does not support setting URL.');
+        }
     },    
 
     update: function(geojson) {
@@ -266,6 +256,20 @@ L.Realtime = L.Layer.extend({
 
     _bustCache: function(url) {
         return url + L.Util.getParamString({'_': new Date().getTime()}, url);
+    },
+
+    _defaultSource: function(responseHandler, errorHandler) {
+        var fetchOptions = this._fetchOptions,
+            url = fetchOptions.url;
+        
+        url = this.options.cache ? url : this._bustCache(url);
+
+        fetch(url, fetchOptions)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(responseHandler)
+        .catch(errorHandler);
     }
 });
 
