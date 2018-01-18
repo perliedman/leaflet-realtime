@@ -188,6 +188,11 @@ L.Realtime = L.Layer.extend({
                 if (options.onEachFeature) {
                     options.onEachFeature(geojson, layer);
                 }
+
+                if (options.style && layer.setStyle) {
+                    layer.setStyle(options.style(geojson));
+                }
+
             }
 
             layer.feature = f;
