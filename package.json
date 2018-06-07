@@ -37,7 +37,7 @@
     "grunt-contrib-uglify": "^3.0.0",
     "leaflet": "^1.0.3",
     "phantomjs": "^2.1.7",
-    "tape": "^4.6.0",
+    "tape": "^4.9.1",
     "tape-run": "^4.0.0"
   },
   "dependencies": {
