@@ -41,7 +41,7 @@
     "tape-run": "^4.0.0"
   },
   "dependencies": {
-    "browserify": "^16.2.1",
+    "browserify": "^16.2.2",
     "grunt-contrib-uglify": "^2.3.0"
   }
 }
