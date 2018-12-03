@@ -137,7 +137,9 @@ L.Realtime = L.Layer.extend({
 
     onAdd: function(map) {
         map.addLayer(this._container);
-        this.start();
+        if (this.options.start) {
+            this.start();
+        }
     },
 
     onRemove: function(map) {
