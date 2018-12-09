@@ -67,11 +67,12 @@ Provides these options, in addition to the options of [`L.GeoJSON`](http://leafl
 
 Option                 | Type                | Default       | Description
 -----------------------|---------------------|----------------------|---------------------------------------------------------
-`start`                | `Boolean`           | `true`        | Should automatic updates be enabled when class is instantiated
+`start`                | `Boolean`           | `true`        | Should automatic updates be enabled when layer is added on the map and stopped when layer is removed from the map
 `interval`             | `Number`            | 60000         | Automatic update interval, in milliseconds
 `getFeatureId(<GeoJSON> featureData)`         | `Function`          | Returns `featureData.properties.id` | Function used to get an identifier uniquely identify a feature over time
 `updateFeature(<GeoJSON> featureData, <ILayer> oldLayer)`                 | `Function` | Special | Used to update an existing feature's layer; by default, points (markers) are updated, other layers are discarded and replaced with a new, updated layer. Allows to create more complex transitions, for example, when a feature is updated |
 `container`            | `LayerGroup`        | L.geoJson()   | Specifies the layer instance to display the results in
+`removeMissing`        | `Boolean`           | `false`   | Should missing features between updates been automatically removed from the layer
 
 ##### Events
 
