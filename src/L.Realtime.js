@@ -17,7 +17,8 @@ L.Realtime = L.Layer.extend({
             }
         },
         logErrors: true,
-        cache: false
+        cache: false,
+        removeMissing: true
     },
 
     initialize: function(src, options) {
@@ -34,10 +35,6 @@ L.Realtime = L.Layer.extend({
         this._features = {};
         this._featureLayers = {};
         this._requestCount = 0;
-
-        if (this.options.start) {
-            this.start();
-        }
     },
 
     start: function() {
@@ -87,7 +84,7 @@ L.Realtime = L.Layer.extend({
         if (geojson) {
             this._onNewData(false, geojson);
         } else {
-            responseHandler = L.bind(function(data) { this._onNewData(true, data); }, this);
+            responseHandler = L.bind(function(data) { this._onNewData(this.options.removeMissing, data); }, this);
             errorHandler = L.bind(this._onError, this);
 
             this._src(checkRequestCount(responseHandler), checkRequestCount(errorHandler));
@@ -140,9 +137,13 @@ L.Realtime = L.Layer.extend({
 
     onAdd: function(map) {
         map.addLayer(this._container);
+        if (this.options.start) {
+            this.start();
+        }
     },
 
     onRemove: function(map) {
+        this.stop();
         map.removeLayer(this._container);
     },
 
