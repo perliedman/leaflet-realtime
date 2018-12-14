@@ -38,7 +38,7 @@
     "leaflet": "^1.0.3",
     "phantomjs": "^2.1.7",
     "tape": "^4.9.1",
-    "tape-run": "^4.0.0"
+    "tape-run": "^5.0.0"
   },
   "dependencies": {
     "browserify": "^16.2.2",
