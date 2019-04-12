@@ -29,19 +29,16 @@
   },
   "homepage": "https://github.com/perliedman/leaflet-realtime",
   "devDependencies": {
-    "browserify": "^14.0.0",
+    "browserify": "^16.2.2",
     "faucet": "0.0.1",
-    "grunt": "^1.0.1",
-    "grunt-browserify": "^5.0.0",
+    "grunt": "^1.0.4",
+    "grunt-browserify": "^5.3.0",
     "grunt-cli": "^1.2.0",
-    "grunt-contrib-uglify": "^3.0.0",
+    "grunt-contrib-uglify": "^4.0.1",
     "leaflet": "^1.0.3",
     "phantomjs": "^2.1.7",
     "tape": "^4.10.1",
     "tape-run": "^5.0.0"
   },
-  "dependencies": {
-    "browserify": "^16.2.2",
-    "grunt-contrib-uglify": "^4.0.0"
-  }
+  "dependencies": {}
 }
