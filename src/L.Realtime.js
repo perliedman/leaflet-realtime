@@ -23,7 +23,7 @@ L.Realtime = L.Layer.extend({
 
     initialize: function(src, options) {
         L.setOptions(this, options);
-        this._container = options.container || L.geoJson(null);
+        this._container = options.container || L.geoJson(null, options);
 
         if (typeof(src) === 'function') {
             this._src = src;
