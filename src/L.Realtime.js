@@ -18,7 +18,8 @@ L.Realtime = L.Layer.extend({
         },
         logErrors: true,
         cache: false,
-        removeMissing: true
+        removeMissing: true,
+        onlyRunWhenAdded: false
     },
 
     initialize: function(src, options) {
@@ -35,6 +36,10 @@ L.Realtime = L.Layer.extend({
         this._features = {};
         this._featureLayers = {};
         this._requestCount = 0;
+
+        if (this.options.start && !this.options.onlyRunWhenAdded) {
+            this.start();
+        }
     },
 
     start: function() {
@@ -143,7 +148,10 @@ L.Realtime = L.Layer.extend({
     },
 
     onRemove: function(map) {
-        this.stop();
+        if (this.options.onlyRunWhenAdded) {
+            this.stop();
+        }
+        
         map.removeLayer(this._container);
     },
 
