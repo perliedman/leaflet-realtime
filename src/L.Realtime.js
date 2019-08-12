@@ -99,6 +99,10 @@ L.Realtime = L.Layer.extend({
     },
 
     remove: function(geojson) {
+        if (typeof geojson === 'undefined') {
+            return L.Layer.prototype.remove.call(this);
+        }
+
         var features = L.Util.isArray(geojson) ? geojson : geojson.features ? geojson.features : [geojson],
             exit = {},
             i,
