@@ -2,8 +2,5 @@
  node_js:
   - 6
   - 10
- before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
 services:
   - xvfb
