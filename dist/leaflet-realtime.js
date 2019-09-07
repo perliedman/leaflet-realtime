@@ -8,15 +8,28 @@ L.Realtime = L.Layer.extend({
         getFeatureId: function(f) {
             return f.properties.id;
         },
-        updateFeature: function(f, oldLayer) {
+        updateFeature: function(feature, oldLayer) {
             if (!oldLayer) { return; }
 
-            if (f.geometry.type === 'Point') {
-                var c = f.geometry.coordinates;
-                oldLayer.setLatLng([c[1], c[0]]);
-                return oldLayer;
+            var type = feature.geometry && feature.geometry.type
+            var coordinates = feature.geometry && feature.geometry.coordinates
+            switch (type) {
+                case 'Point':
+                    oldLayer.setLatLng(L.GeoJSON.coordsToLatLng(coordinates));
+                    break;
+                case 'LineString':
+                case 'MultiLineString':
+                    oldLayer.setLatLngs(L.GeoJSON.coordsToLatLngs(coordinates, type === 'LineString' ? 0 : 1));
+                    break;
+                case 'Polygon':
+                case 'MultiPolygon':
+                    oldLayer.setLatLngs(L.GeoJSON.coordsToLatLngs(coordinates, type === 'Polygon' ? 1 : 2));
+                    break;
+                default:
+                    return null;
             }
-        },
+            return oldLayer;
+          },
         logErrors: true,
         cache: false,
         removeMissing: true,
