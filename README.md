@@ -47,7 +47,7 @@ Since version 2.0, Leaflet Realtime uses the [Fetch API](https://developer.mozil
 
 If you prefer getting data _pushed_ from the server, in contrast to Leaflet Realtime pulling it with a standard HTTP request, you can feed added and updated GeoJSON data to Leaflet Realtime using the `update` method. In this scenario, you will also need to remove features by explicit calls to `remove`.
 
-Since automatic updates do not make sense in a push scenario, you want to create the layer with the option `start` set to to `false`.
+Since automatic updates do not make sense in a push scenario, you want to create the layer with the option `start` set to `false`.
 
 ### API
 
