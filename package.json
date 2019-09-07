@@ -13,7 +13,7 @@
   },
   "scripts": {
     "prepublish": "grunt",
-    "test": "browserify test/L.Realtime | tape-run -b phantom | faucet"
+    "test": "browserify test/L.Realtime | tape-run -b electron | faucet"
   },
   "keywords": [
     "leaflet",
@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/perliedman/leaflet-realtime",
   "devDependencies": {
-    "browserify": "^16.2.2",
+    "browserify": "^16.5.0",
     "faucet": "0.0.1",
     "grunt": "^1.0.4",
     "grunt-browserify": "^5.3.0",
@@ -38,7 +38,7 @@
     "leaflet": "^1.0.3",
     "phantomjs": "^2.1.7",
     "tape": "^4.10.1",
-    "tape-run": "^6.0.0"
+    "tape-run": "^6.0.1"
   },
   "dependencies": {}
 }
