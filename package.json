@@ -37,7 +37,7 @@
     "grunt-contrib-uglify": "^4.0.1",
     "leaflet": "^1.5.1",
     "tape": "^4.10.1",
-    "tape-run": "^6.0.1"
+    "tape-run": "^7.0.0"
   },
   "dependencies": {}
 }
